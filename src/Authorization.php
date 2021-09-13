@@ -56,7 +56,7 @@ class Authorization
         if (is_null($temporaryCredentials)) {
             $sessionKey = self::getCredentialSessionKey();
             $temporaryCredentials = $this->getTemporaryCredentials();
-            $_SESSION[$sessionKey] = serialize($temporaryCredentials);
+            \Session::put($sessionKey, serialize($temporaryCredentials));
             session_write_close();
         }
 
@@ -102,8 +102,7 @@ class Authorization
     {
         if (is_null($temporaryCredentials)) {
             $sessionKey = self::getCredentialSessionKey();
-            $temporaryCredentials = unserialize($_SESSION[$sessionKey]);
-            unset($_SESSION[$sessionKey]);
+            $temporaryCredentials = unserialize(\Session::pull($sessionKey));
             session_write_close();
         }
 
